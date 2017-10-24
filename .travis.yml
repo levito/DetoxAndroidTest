@@ -2,22 +2,23 @@ language: android
 jdk: oraclejdk8
 env:
   global:
+    - ANDROID_NAME=Nexus_5X_API_23
     - ANDROID_TARGET=android-23
-    - ANDROID_ABI=x86
+    - ANDROID_ABI=armeabi-v7a
     - NODE_VERSION=8.7.0
 
 android:
   components:
-  - tools
-  - platform-tools
-  - build-tools-25.0.1
-  - android-23
-  - extra-android-m2repository
-  - extra-google-m2repository
-  - sys-img-x86-android-23
+    - tools
+    - platform-tools
+    - build-tools-25.0.1
+    - android-23
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - sys-img-armeabi-v7a-android-23
 install:
   - android list targets
-  - echo no | android create avd -f -n Nexus_5X_API_23 -t $ANDROID_TARGET -b $ANDROID_ABI
+  - echo no | android create avd -f -n $ANDROID_NAME -t $ANDROID_TARGET -b $ANDROID_ABI
   - nvm install $NODE_VERSION;
   - nvm use --delete-prefix $NODE_VERSION;
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s
@@ -25,7 +26,7 @@ install:
   - yarn
 script:
   - npm run start & PACKAGER_PID=$!
-  - emulator -avd Nexus_5X_API_23 -no-skin -no-audio -no-window &
+  - emulator -avd $ANDROID_NAME -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - npm run e2e:android
