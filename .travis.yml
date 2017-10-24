@@ -1,0 +1,35 @@
+language: android
+jdk: oraclejdk8
+env:
+  global:
+    - ANDROID_TARGET=android-23
+    - ANDROID_ABI=x86
+
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-25.0.1
+  - android-23
+  - extra-android-m2repository
+  - extra-google-m2repository
+  - sys-img-x86-android-23
+install:
+  - nvm install $NODE_VERSION;
+  - nvm use --delete-prefix $NODE_VERSION;
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - yarn global add react-native-cli detox-cli >/dev/null 2>&1
+  - android list targets
+  - echo no | android create avd --force -n test -t android-23 --abi x86 -no-accel
+  - yarn
+script:
+  - npm run start & PACKAGER_PID=$!
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+  - npm run e2e:android
+after_failure:
+  - kill -9 $PACKAGER_PID
+after_success:
+  - kill -9 $PACKAGER_PID
