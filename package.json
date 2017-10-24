@@ -1,22 +1,57 @@
 {
-	"name": "DetoxAndroidTest",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"react": "16.0.0-alpha.12",
-		"react-native": "0.46.4"
-	},
-	"devDependencies": {
-		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
-		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0-alpha.12"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "DetoxAndroidTest",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "e2e:build": "detox build -c ios.sim.release",
+    "e2e:test": "detox test --cleanup -c ios.sim.release",
+    "e2e": "npm run e2e:build && npm run e2e:test"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.46.4"
+  },
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-react-native": "4.0.0",
+    "detox": "5.8.1",
+    "jest": "21.2.1",
+    "mocha": "4.0.1",
+    "react-test-renderer": "16.0.0-alpha.12"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "detox": {
+    "specs": "e2e",
+    "configurations": {
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/DetoxAndroidTest.app",
+        "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -project ios/DetoxAndroidTest.xcodeproj -scheme DetoxAndroidTest -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone 7"
+      },
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/DetoxAndroidTest.app",
+        "build": "xcodebuild -project ios/DetoxAndroidTest.xcodeproj -scheme DetoxAndroidTest -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone 7"
+      },
+      "android.emu.debug": {
+        "binaryPath": "android/app/build/outputs/apk/app-debug.apk",
+        "build": "pushd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && popd",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_25"
+      },
+      "android.emu.release": {
+        "binaryPath": "android/app/build/outputs/apk/app-release.apk",
+        "build": "pushd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && popd",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_25"
+      }
+    }
+  }
 }
