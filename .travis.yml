@@ -2,8 +2,8 @@ language: android
 jdk: oraclejdk8
 env:
   global:
-    - ANDROID_NAME=Nexus_5X_API_23
-    - ANDROID_TARGET=android-23
+    - ANDROID_NAME=Nexus_5X_API_22
+    - ANDROID_TARGET=android-22
     - ANDROID_ABI=armeabi-v7a
     - NODE_VERSION=8.7.0
 
@@ -12,10 +12,10 @@ android:
     - tools
     - platform-tools
     - build-tools-25.0.1
-    - android-23
+    - android-25
     - extra-android-m2repository
     - extra-google-m2repository
-    - sys-img-armeabi-v7a-android-23
+    - sys-img-armeabi-v7a-android-22
 install:
   - android list targets
   - echo no | android create avd -f -n $ANDROID_NAME -t $ANDROID_TARGET -b $ANDROID_ABI
