@@ -4,6 +4,7 @@ env:
   global:
     - ANDROID_TARGET=android-23
     - ANDROID_ABI=x86
+    - NODE_VERSION=8.7.0
 
 android:
   components:
