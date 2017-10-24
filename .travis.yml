@@ -11,10 +11,10 @@ android:
   - tools
   - platform-tools
   - build-tools-25.0.1
-  - android-23
+  - android-25
   - extra-android-m2repository
   - extra-google-m2repository
-  - sys-img-x86-android-23
+  - sys-img-x86-android-25
 install:
   - nvm install $NODE_VERSION;
   - nvm use --delete-prefix $NODE_VERSION;
@@ -22,7 +22,7 @@ install:
   - export PATH="$HOME/.yarn/bin:$PATH"
   - yarn global add react-native-cli detox-cli >/dev/null 2>&1
   - android list targets
-  - echo no | android create avd --force -n test -t android-23 --abi x86 -no-accel
+  - echo no | android create avd --force -n test -t android-25 --abi x86 -no-accel
   - yarn
 script:
   - npm run start & PACKAGER_PID=$!
