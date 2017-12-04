@@ -104,6 +104,14 @@ android {
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file("keystores/release.jks")
+            keyAlias "detoxtest"
+            storePassword "detoxtest"
+            keyPassword "detoxtest"
+        }
+    }
     splits {
         abi {
             reset()
@@ -116,6 +124,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
